@@ -11,6 +11,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using LibraryManagement.ViewModel;
+using LibraryManagement.Data.Authentification;
+using Microsoft.AspNetCore.Identity;
 
 namespace LibraryManagement
 {
@@ -26,7 +28,14 @@ namespace LibraryManagement
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<MyIdentityDbContext>(options => options.UseInMemoryDatabase("LibraryContext"));
+            services.AddIdentity<MyIdentityUser, MyIdentityRole>()
+            .AddEntityFrameworkStores<MyIdentityDbContext>()
+            .AddDefaultTokenProviders();
             services.AddDbContext<LibraryDbContext>(options => options.UseInMemoryDatabase("LibraryContext"));
+            services.AddTransient<UserManager<MyIdentityUser>>();
+            services.AddTransient<SignInManager<MyIdentityUser>>();
+            services.AddTransient<RoleManager<MyIdentityRole>>();
             services.AddTransient<ICustomerRepository, CustomerRepository>();
             services.AddTransient<IAuthorRepository, AuthorRepository>();
             services.AddTransient<IBookRepository, BookRepository>();
@@ -44,6 +53,8 @@ namespace LibraryManagement
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+            app.UseAuthentication();
 
             app.UseStaticFiles();
 

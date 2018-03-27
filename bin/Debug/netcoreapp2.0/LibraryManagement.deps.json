@@ -24,6 +24,9 @@
       "LibraryManagement/1.0.0": {
         "dependencies": {
           "Microsoft.AspNetCore.All": "2.0.6",
+          "Microsoft.AspNetCore.Authentication.Cookies": "2.0.3",
+          "Microsoft.AspNetCore.Identity": "2.0.2",
+          "Microsoft.EntityFrameworkCore.SqlServer": "2.0.2",
           "Microsoft.NETCore.App": "2.0.0"
         },
         "runtime": {
